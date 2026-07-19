@@ -36,7 +36,7 @@ const UserMenu = () => {
         >
           {initial}
         </span>
-        <span className="max-w-[100px] truncate text-sm font-medium text-ink">
+        <span className="max-w-25 truncate text-sm font-medium text-ink">
           {user.username}
         </span>
         <ChevronDown
