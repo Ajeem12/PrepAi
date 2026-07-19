@@ -1,0 +1,167 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Sora', 'Inter', system-ui, sans-serif;
+
+  --color-page: #08090f;
+  --color-card: #12141f;
+  --color-panel: #171a29;
+  --color-input: #191c2c;
+  --color-line: #24273b;
+  --color-ink: #f2f3fa;
+  --color-muted: #8b8fa8;
+
+  --color-accent: #7c5cff;
+  --color-accent-2: #22d3ee;
+  --color-accent-alt: #a78bff;
+
+  --color-info: #38bdf8;
+  --color-purple: #c084fc;
+  --color-good: #34d399;
+  --color-warn: #fbbf24;
+  --color-bad: #fb7185;
+}
+
+@layer base {
+  * {
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  /* Ambient animated glow behind a page. Add `relative` on the page wrapper. */
+  .aurora-bg::before {
+    content: '';
+    position: fixed;
+    inset: -10%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        38% 28% at 18% 15%,
+        color-mix(in srgb, var(--color-accent) 40%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        32% 28% at 85% 10%,
+        color-mix(in srgb, var(--color-accent-2) 32%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        42% 32% at 50% 105%,
+        color-mix(in srgb, var(--color-accent-alt) 26%, transparent),
+        transparent 70%
+      );
+    filter: blur(70px);
+    animation: auroraDrift 20s ease-in-out infinite alternate;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .card {
+    @apply rounded-2xl;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold
+           transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white
+           transition-all duration-200 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      #5b7dff 55%,
+      var(--color-accent-2) 100%
+    );
+    box-shadow: 0 10px 30px -10px
+      color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold
+           transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100
+           text-ink hover:border-accent/40;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-input px-4 py-3 text-sm text-ink placeholder:text-muted
+           outline-none transition-colors duration-150 focus:border-accent;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.4s ease both;
+  }
+  .fade-in-up {
+    animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes auroraDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(2%, -3%, 0) scale(1.08);
+  }
+}
