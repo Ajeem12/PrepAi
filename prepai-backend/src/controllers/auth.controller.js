@@ -3,6 +3,12 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import tokenBlacklistModel from '../models/blacklist.model.js'
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+}
+
 /**
  * @name registerUserController
  * @description register a new user, expects username, email and password in the request body
@@ -41,7 +47,7 @@ async function registerUserController(req, res) {
     { expiresIn: '1d' },
   )
 
-  res.cookie('token', token)
+  res.cookie('token', token, cookieOptions)
 
   res.status(201).json({
     message: 'User registered successfully',
@@ -83,7 +89,7 @@ async function loginUserController(req, res) {
     { expiresIn: '1d' },
   )
 
-  res.cookie('token', token)
+  res.cookie('token', token, cookieOptions)
   res.status(200).json({
     message: 'User loggedIn successfully.',
     user: {
@@ -106,7 +112,7 @@ async function logoutUserController(req, res) {
     await tokenBlacklistModel.create({ token })
   }
 
-  res.clearCookie('token')
+  res.clearCookie('token', cookieOptions)
 
   res.status(200).json({
     message: 'User logged out successfully',

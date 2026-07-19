@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 // Toggle base URL for local dev vs production.
-// const BASE_URL = "https://prepai-backend-1-xubx.onrender.com";
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
 export const api = axios.create({
   baseURL: BASE_URL,

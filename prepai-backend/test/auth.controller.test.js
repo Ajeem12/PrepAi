@@ -67,7 +67,11 @@ describe('registerUserController', () => {
       email: 'sam@example.com',
       password: 'hashed-password',
     })
-    expect(res.cookie).toHaveBeenCalledWith('token', 'signed-token')
+    expect(res.cookie).toHaveBeenCalledWith('token', 'signed-token', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+    })
     expect(res.status).toHaveBeenCalledWith(201)
     expect(res.json).toHaveBeenCalledWith({
       message: 'User registered successfully',

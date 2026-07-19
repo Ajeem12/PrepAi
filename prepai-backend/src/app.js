@@ -8,12 +8,29 @@ const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL,
+].filter(Boolean)
+
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin(origin, callback) {
+      // Allows server-to-server calls or tools without an Origin header.
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true)
+      }
+
+      return callback(new Error('Origin not allowed by CORS'))
+    },
     credentials: true,
   }),
 )
+
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({ status: 'ok' })
+})
 
 /* using all the routes here */
 app.use('/api/auth', authRouter)
